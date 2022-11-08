@@ -1,0 +1,30 @@
+{
+    "name": "armenium/laratwiliomulti",
+    "authors": [
+        {
+            "name": "Armenium",
+            "email": "armen@digidez.com"
+        }
+    ],
+    "require": {
+        "twilio/sdk": "^5.42"
+    },
+    "autoload": {
+        "psr-4": {
+            "Armenium\\LaraTwilioMulti\\":"src/"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Armenium\\LaraTwilioMulti\\LaraTwilioMultiServiceProvider"
+            ],
+            "aliases": {
+                "LaraTwilioMulti": "Armenium\\LaraTwilioMulti\\Facades\\LaraTwilioMulti"
+            }
+        }
+    }
+}
