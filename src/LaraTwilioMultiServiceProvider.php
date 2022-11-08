@@ -2,11 +2,14 @@
 
 namespace Armenium\LaraTwilioMulti;
 
+use App\Models\Recipient;
 use Exception;
 use Illuminate\Support\ServiceProvider;
 use Twilio\Rest\Client;
 
 class LaraTwilioMultiServiceProvider extends ServiceProvider{
+
+	private $configs;
 
 	public function register(){
 		$this->mergeConfigFrom(__DIR__.'/../config/laratwiliomulti.php', 'laratwiliomulti');
@@ -15,7 +18,6 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 			$this->ensureConfigValuesAreSet();
 
 			$configs = config('laratwiliomulti');
-
 			if(is_null($use_account)){
 				$use_account = $config['active_account'];
 			}
@@ -29,12 +31,15 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function boot(){
 		if($this->app->runningInConsole()){
 			$this->publishConfig();
+			#$this->registerViews();
+			$this->registerMigrations();
 		}
 	}
 
 	protected function ensureConfigValuesAreSet(){
 		$configs = config('laratwiliomulti');
-
+		#$r = Recipient::find(288);
+		#dd($r);
 		foreach($configs as $k => $elements){
 			foreach($elements['accounts'] as $account_key => $mandatoryAttributes){
 				foreach($mandatoryAttributes as $key => $value){
@@ -47,8 +52,16 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	protected function publishConfig(){
-		$this->publishes([
-			__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php'),
-		], 'laratwiliomulti-config');
+		$this->publishes([__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php')], 'laratwiliomulti-config');
 	}
+
+	public function registerViews(){
+		$this->loadViewsFrom(__DIR__.'/../views', 'laravel-email-templates');
+		$this->publishes([__DIR__.'/../views' => resource_path('views/vendor/laravel-email-templates')]);
+	}
+
+	public function registerMigrations(){
+		$this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+	}
+
 }

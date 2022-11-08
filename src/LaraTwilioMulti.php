@@ -17,7 +17,7 @@ class LaraTwilioMulti{
 
 	public function notify(string $number, string $message, $use_account = null){
 		$config = config('laratwiliomulti');
-
+		#dd(1);
 		if(is_null($use_account)){
 			$use_account = $config['active_account'];
 		}
