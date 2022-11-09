@@ -4,6 +4,7 @@ namespace Armenium\LaraTwilioMulti\Controllers;
 
 use Armenium\LaraTwilioMulti\Models\LaraTwilioMultiSettings;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class LaraTwilioMultiSettingsController extends Controller{
 

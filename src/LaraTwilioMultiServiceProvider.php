@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Route;
 
 class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
@@ -32,11 +33,11 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function boot(){
 		if($this->app->runningInConsole()){
 			$this->publishConfig();
-			$this->registerViews();
 			$this->registerMigrations();
 			#$this->registerRoutes();
-			$this->installRoutes();
 		}
+		$this->registerViews();
+		$this->installRoutes();
 	}
 
 	protected function ensureConfigValuesAreSet(){
@@ -69,12 +70,10 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	public function registerRoutes(){
-		dd(__METHOD__);
 		$this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
 	}
 
 	protected function installRoutes(){
-		dd(__METHOD__);
 		$config = [
 			'prefix' => '',
 			'middleware' => ['auth'],
