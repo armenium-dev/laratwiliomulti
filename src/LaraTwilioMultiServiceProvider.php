@@ -4,6 +4,7 @@ namespace Armenium\LaraTwilioMulti;
 
 use App\Models\Recipient;
 use Exception;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 use Twilio\Rest\Client;
 
@@ -63,7 +64,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function registerMigrations(){
 		#$this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
-		$this->artisan('migrate', ['--database' => 'testing']);
+		Artisan::call('migrate');
 	}
 
 }
