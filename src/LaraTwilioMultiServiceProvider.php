@@ -59,10 +59,8 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	public function registerViews(){
-		if(!$this->isLumen()){
 			$this->loadViewsFrom(__DIR__.'/views', 'LaraTwilioMultiViews');
 			$this->publishes([__DIR__.'/views' => resource_path('views/vendor/LaraTwilioMultiViews')]);
-		}
 	}
 
 	public function registerMigrations(){
@@ -83,17 +81,10 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 			'namespace' => 'Armenium\LaraTwilioMulti',
 		];
 
-		if(!$this->isLumen()){
-			#Route::resource('laratwiliomultisettings', 'Armenium\LaraTwilioMulti\Controllers\LaraTwilioMultiSettingsController');
-			Route::group($config, function(){
-				Route::get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
-			});
-		}else{
-			$app = $this->app;
-			$app->group($config, function() use ($app){
-				$app->get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
-			});
-		}
+		#Route::resource('laratwiliomultisettings', 'Armenium\LaraTwilioMulti\Controllers\LaraTwilioMultiSettingsController');
+		Route::group($config, function(){
+			Route::get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
+		});
 	}
 
 }
