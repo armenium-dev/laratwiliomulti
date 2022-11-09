@@ -32,8 +32,10 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function boot(){
 		if($this->app->runningInConsole()){
 			$this->publishConfig();
-			#$this->registerViews();
+			$this->registerViews();
 			$this->registerMigrations();
+			#$this->registerRoutes();
+			$this->installRoutes();
 		}
 	}
 
@@ -57,14 +59,41 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	public function registerViews(){
-		$this->loadViewsFrom(__DIR__.'/../views', 'laravel-email-templates');
-		$this->publishes([__DIR__.'/../views' => resource_path('views/vendor/laravel-email-templates')]);
+		if(!$this->isLumen()){
+			$this->loadViewsFrom(__DIR__.'/views', 'LaraTwilioMultiViews');
+			$this->publishes([__DIR__.'/views' => resource_path('views/vendor/LaraTwilioMultiViews')]);
+		}
 	}
 
 	public function registerMigrations(){
-		#$this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
 		Artisan::call('migrate');
+	}
+
+	public function registerRoutes(){
+		dd(__METHOD__);
+		$this->loadRoutesFrom(realpath(__DIR__.'/../routes/web.php'));
+	}
+
+	protected function installRoutes(){
+		dd(__METHOD__);
+		$config = [
+			'prefix' => '',
+			'middleware' => ['auth'],
+			'namespace' => 'Armenium\LaraTwilioMulti',
+		];
+
+		if(!$this->isLumen()){
+			#Route::resource('laratwiliomultisettings', 'Armenium\LaraTwilioMulti\Controllers\LaraTwilioMultiSettingsController');
+			Route::group($config, function(){
+				Route::get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
+			});
+		}else{
+			$app = $this->app;
+			$app->group($config, function() use ($app){
+				$app->get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
+			});
+		}
 	}
 
 }
