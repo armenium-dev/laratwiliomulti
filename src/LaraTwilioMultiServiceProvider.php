@@ -63,7 +63,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function registerMigrations(){
 		#$this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
-		$this->artisan('migrate');
+		$this->artisan('migrate', ['--database' => 'testing']);
 	}
 
 }
