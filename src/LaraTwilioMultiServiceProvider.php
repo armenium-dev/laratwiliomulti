@@ -67,7 +67,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 	public function registerMigrations(){
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
-		Artisan::call('migrate');
+		Artisan::call('migrate:refresh --path="'.realpath(__DIR__.'/../database/migrations/2022_11_09_001_create_twilio_settings_table.php').'"');
 	}
 
 	public function registerRoutes(){
