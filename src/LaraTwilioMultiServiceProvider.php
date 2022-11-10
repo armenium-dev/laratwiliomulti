@@ -32,7 +32,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 	public function boot(){
 		if($this->app->runningInConsole()){
-			$this->publishConfig();
+			$this->publishFiles();
 			$this->registerMigrations();
 			#$this->registerRoutes();
 		}
@@ -55,14 +55,14 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 		}
 	}
 
-	protected function publishConfig(){
+	protected function publishFiles(){
 		$this->publishes([__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php')], 'laratwiliomulti-config');
 		$this->publishes([__DIR__.'/../public' => public_path('vendor/laratwiliomulti')], 'laratwiliomulti-public');
+		$this->publishes([realpath(__DIR__.'/../views') => resource_path('views/vendor/LaraTwilioMultiViews')]);
 	}
 
 	public function registerViews(){
 		$this->loadViewsFrom(realpath(__DIR__.'/../views'), 'LaraTwilioMultiViews');
-		$this->publishes([realpath(__DIR__.'/../views') => resource_path('views/vendor/LaraTwilioMultiViews')]);
 	}
 
 	public function registerMigrations(){

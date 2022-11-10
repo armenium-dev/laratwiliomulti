@@ -14,6 +14,10 @@ To publish the config file, run:
 
 `php artisan vendor:publish --tag=laratwiliomulti-config`
 
+To publish the public files, run:
+
+`php artisan vendor:publish --tag=laratwiliomulti-public`
+
 This is the content of the config file that will be published at `config/laratwiliomulti.php`
 
 ```php
