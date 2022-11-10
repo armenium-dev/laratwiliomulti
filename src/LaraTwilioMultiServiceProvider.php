@@ -66,7 +66,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	public function registerMigrations(){
-		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
+		#$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
 		Artisan::call('migrate', ['--path' => '/vendor/armenium/laratwiliomulti/database/migrations/2022_11_09_001_create_twilio_settings_table.php']);
 	}
 
