@@ -13,6 +13,12 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 	private $configs;
 
+	private function checkAppVersion(){
+		$v = app()->version();
+
+		return intval(explode('.', $v)[0]);
+	}
+
 	public function register(){
 		$this->mergeConfigFrom(__DIR__.'/../config/laratwiliomulti.php', 'laratwiliomulti');
 
@@ -67,8 +73,11 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 	public function registerMigrations(){
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
-		#Artisan::call('migrate', ['--path' => '/vendor/armenium/laratwiliomulti/database/migrations/2022_11_09_001_create_twilio_settings_table.php']);
-		Artisan::call('migrate');
+
+		if($this->checkAppVersion() < 7)
+			Artisan::call('migrate');
+		else
+			Artisan::call('migrate', ['--path' => '/vendor/armenium/laratwiliomulti/database/migrations/2022_11_09_001_create_twilio_settings_table.php']);
 	}
 
 	public function registerRoutes(){
