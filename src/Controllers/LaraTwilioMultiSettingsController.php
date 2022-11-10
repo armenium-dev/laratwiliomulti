@@ -14,7 +14,9 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		dd(__METHOD__);
+		$settings = LaraTwilioMultiSettings::all();
+
+		return view('LaraTwilioMultiViews::index', compact('settings'));
 	}
 
 	/**

@@ -57,11 +57,12 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 	protected function publishConfig(){
 		$this->publishes([__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php')], 'laratwiliomulti-config');
+		$this->publishes([__DIR__.'/../public' => public_path('vendor/laratwiliomulti')], 'laratwiliomulti-public');
 	}
 
 	public function registerViews(){
-			$this->loadViewsFrom(__DIR__.'/views', 'LaraTwilioMultiViews');
-			$this->publishes([__DIR__.'/views' => resource_path('views/vendor/LaraTwilioMultiViews')]);
+		$this->loadViewsFrom(realpath(__DIR__.'/../views'), 'LaraTwilioMultiViews');
+		$this->publishes([realpath(__DIR__.'/../views') => resource_path('views/vendor/LaraTwilioMultiViews')]);
 	}
 
 	public function registerMigrations(){
@@ -76,13 +77,13 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	protected function installRoutes(){
 		$config = [
 			'prefix' => '',
-			'middleware' => ['auth'],
+			'middleware' => ['auth', 'role:captain'],
 			'namespace' => 'Armenium\LaraTwilioMulti',
 		];
 
-		#Route::resource('laratwiliomultisettings', 'Armenium\LaraTwilioMulti\Controllers\LaraTwilioMultiSettingsController');
 		Route::group($config, function(){
-			Route::get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
+			Route::resource('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController');
+			#Route::get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
 		});
 	}
 

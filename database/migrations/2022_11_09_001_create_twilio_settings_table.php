@@ -18,11 +18,11 @@ class CreateTwilioSettingsTable extends Migration{
 			Schema::create($this->table, function(Blueprint $table){
 				$table->increments('id');
 				$table->string('name')->nullable();
-				$table->string('sms_from')->nullable();
 				$table->string('account_sid')->nullable();
 				$table->string('auth_token')->nullable();
-				$table->integer('default')->default(0);
-				$table->string('rules')->nullable();
+				$table->json('params')->nullable();
+				$table->integer('order')->default(0);
+				$table->integer('active')->default(0);
 				$table->timestamps();
 			});
 		}
