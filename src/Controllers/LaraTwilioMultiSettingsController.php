@@ -25,7 +25,7 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create(){
-		//
+		return view('LaraTwilioMultiViews::create');
 	}
 
 	/**
@@ -35,7 +35,14 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request){
-		//
+		$input = $request->all();
+		$input['active'] = isset($input['active']) ? 1 : 0;
+		$input['params'] = json_encode($input['params']);
+		unset($input['_token']);
+
+		LaraTwilioMultiSettings::create($input);
+
+		return redirect(route('laratwiliomultisettings.index'));
 	}
 
 	/**
@@ -54,8 +61,10 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @param \App\LaraTwilioMultiSettings $laraTwilioMultiSettings
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(LaraTwilioMultiSettings $laraTwilioMultiSettings){
-		//
+	public function edit($id, LaraTwilioMultiSettings $laraTwilioMultiSettings){
+		$settings = $laraTwilioMultiSettings->find($id);
+		#dd($settings->params['sms_from']);
+		return view('LaraTwilioMultiViews::edit', compact('settings'));
 	}
 
 	/**
@@ -66,7 +75,14 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request, LaraTwilioMultiSettings $laraTwilioMultiSettings){
-		//
+		$input = $request->all();
+		$input['active'] = isset($input['active']) ? 1 : 0;
+		$input['params'] = json_encode($input['params']);
+		unset($input['_token']);
+
+		LaraTwilioMultiSettings::update($input);
+
+		return redirect(route('laratwiliomultisettings.index'));
 	}
 
 	/**
