@@ -9,7 +9,7 @@
         @include('adminlte-templates::common.errors')
         <div class="box box-primary">
             <div class="box-body">
-                {!! Form::open(['route' => 'laratwiliomultisettings.store', 'files' => true]) !!}
+                {!! Form::model($settings, ['route' => ['laratwiliomultisettings.update', $settings->id], 'method' => 'PATCH', 'files' => true]) !!}
                     @include('LaraTwilioMultiViews::fields', ['mode' => 'edit'])
                 {!! Form::close() !!}
             </div>

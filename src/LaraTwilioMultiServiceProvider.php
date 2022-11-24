@@ -93,7 +93,6 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 		Route::group($config, function(){
 			Route::resource('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController');
-			#Route::get('laratwiliomultisettings', 'Controllers\LaraTwilioMultiSettingsController@index')->name('laratwiliomultisettings.index');
 		});
 	}
 

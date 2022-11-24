@@ -5,6 +5,7 @@ namespace Armenium\LaraTwilioMulti\Controllers;
 use Armenium\LaraTwilioMulti\Models\LaraTwilioMultiSettings;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Flash;
 
 class LaraTwilioMultiSettingsController extends Controller{
 
@@ -25,7 +26,10 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create(){
-		return view('LaraTwilioMultiViews::create');
+		$settings = new LaraTwilioMultiSettings();
+		$settings->params = [0 => []];
+
+		return view('LaraTwilioMultiViews::create', compact('settings'));
 	}
 
 	/**
@@ -36,9 +40,14 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 */
 	public function store(Request $request){
 		$input = $request->all();
+
+		if(empty($input['name'])){
+			$input['name'] = "Twilio Account";
+		}
+
 		$input['active'] = isset($input['active']) ? 1 : 0;
 		$input['params'] = json_encode($input['params']);
-		unset($input['_token']);
+
 
 		LaraTwilioMultiSettings::create($input);
 
@@ -63,7 +72,9 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 */
 	public function edit($id, LaraTwilioMultiSettings $laraTwilioMultiSettings){
 		$settings = $laraTwilioMultiSettings->find($id);
-		#dd($settings->params['sms_from']);
+		$settings->params = json_decode($settings->params, true);
+		#dd($settings->params);
+
 		return view('LaraTwilioMultiViews::edit', compact('settings'));
 	}
 
@@ -74,13 +85,13 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @param \App\LaraTwilioMultiSettings $laraTwilioMultiSettings
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, LaraTwilioMultiSettings $laraTwilioMultiSettings){
+	public function update($id, Request $request){
+		$laraTwilioMultiSettings = LaraTwilioMultiSettings::find($id);
 		$input = $request->all();
 		$input['active'] = isset($input['active']) ? 1 : 0;
 		$input['params'] = json_encode($input['params']);
-		unset($input['_token']);
 
-		LaraTwilioMultiSettings::update($input);
+		$laraTwilioMultiSettings->update($input);
 
 		return redirect(route('laratwiliomultisettings.index'));
 	}
@@ -91,7 +102,19 @@ class LaraTwilioMultiSettingsController extends Controller{
 	 * @param \App\LaraTwilioMultiSettings $laraTwilioMultiSettings
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(LaraTwilioMultiSettings $laraTwilioMultiSettings){
-		//
+	public function destroy($id){
+		$laraTwilioMultiSettings = LaraTwilioMultiSettings::find($id);
+
+		if (empty($laraTwilioMultiSettings)) {
+			Flash::error('Account not found');
+
+			return redirect(route('laratwiliomultisettings.index'));
+		}
+
+		$laraTwilioMultiSettings->delete();
+
+		Flash::success('Account deleted successfully.');
+
+		return redirect(route('laratwiliomultisettings.index'));
 	}
 }
