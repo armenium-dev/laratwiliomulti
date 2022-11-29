@@ -65,8 +65,8 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 
 	protected function publishFiles(){
 		#$this->publishes([__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php')], 'laratwiliomulti-config');
-		$this->publishes([__DIR__.'/../public' => public_path('vendor/laratwiliomulti')], 'laratwiliomulti-public');
-		$this->publishes([realpath(__DIR__.'/../views') => resource_path('views/vendor/LaraTwilioMultiViews')]);
+		$this->publishes([__DIR__.'/../public' => public_path('vendor/laratwiliomulti')], 'laratwiliomulti-assets');
+		$this->publishes([realpath(__DIR__.'/../views') => resource_path('views/vendor/LaraTwilioMultiViews')], 'laratwiliomulti-views');
 	}
 
 	public function registerViews(){
