@@ -1,5 +1,5 @@
 # Introduction
-This is a Laravel package for sending SMS with Twilio
+This is a Laravel package for sending SMS using the Twilio service using Twilio multi-accounts and patterns for automatically selecting an "sms_from" number.
 
 ### Step One - Installation
 
@@ -22,13 +22,15 @@ To publish the asset (js, css) files, run:
 php artisan vendor:publish --tag=laratwiliomulti-assets
 ```
 
-### Step Three - Enter values to the DB
-Go to the Settings page and create account(s)
+### Step Three - Enter values in DB
+Go to the Settings page and create an account(s)
 
-Settings page look like this:
+On your site, the link to the settings page will look like this:
+
 ```shell
 https://YOUR-DOMAIN.com/laratwiliomultisettings
 ```
+_(Replace YOUR-DOMAIN.com with your real domain)_
 
 ### Usage
 To send a SMS message, you can use the `notify()` method available on the `LaraTwilioMulti` Facade
