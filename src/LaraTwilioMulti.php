@@ -42,7 +42,6 @@ class LaraTwilioMulti{
 
 		$client = new TwilioClient($this->account_sid, $this->auth_token);
 
-		return true;
 		return $this->client->messages->create($number, [
 			'from' => $this->sms_from,
 			'body' => $message,
