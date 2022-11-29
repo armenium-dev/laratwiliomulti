@@ -30,6 +30,7 @@
             <div class="col">{!! Form::text('params['.$k.'][sms_from]', null, ['class' => 'js_sms_from form-control', 'placeholder' => 'SMS From number']) !!}</div>
             <div class="col">{!! Form::text('params['.$k.'][pattern]', null, ['class' => 'form-control', 'placeholder' => 'Trigger pattern (opt). Ex: +44* or *2230 or full number']) !!}</div>
             <div class="col"><label class="m-0">{!! Form::checkbox('params['.$k.'][active]', 1, null, ['class' => ''] ) !!} Status</label></div>
+            <div class="col"><label class="m-0">{!! Form::radio('params['.$k.'][default]', 1, null, ['class' => 'js_default'] ) !!} Default</label></div>
             <div class="col"><a class="js_delete_row btn btn-danger" href="#"><i class="fa fa-trash"></i> Delete</a></div>
         </div>
     </li>
@@ -57,7 +58,8 @@
 			Init: function(){
 				$(document)
 					.on('click', '#js_add_row', ACE.Rows.add)
-					.on('click', '.js_delete_row', ACE.Rows.remove);
+					.on('click', '.js_delete_row', ACE.Rows.remove)
+					.on('click', '.js_default', ACE.Form.choiceDefault);
             },
             Rows: {
 				add: function(obj){
@@ -86,7 +88,13 @@
 
 					return $cloned_row_item;
 				},
-			}
+			},
+            Form: {
+				choiceDefault: function(obj){
+					ACE.elements.js_numbers_list.find('.js_default').prop('checked', false);
+                    $(obj.target).prop('checked', true);
+                },
+            },
         };
 
 		ACE.Init();

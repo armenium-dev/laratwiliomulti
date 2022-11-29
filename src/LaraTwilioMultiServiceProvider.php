@@ -5,6 +5,7 @@ namespace Armenium\LaraTwilioMulti;
 use App\Models\Recipient;
 use Exception;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Route;
@@ -20,19 +21,20 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	public function register(){
-		$this->mergeConfigFrom(__DIR__.'/../config/laratwiliomulti.php', 'laratwiliomulti');
+		#Log::stack(['custom'])->debug(__METHOD__);
+		#$this->mergeConfigFrom(__DIR__.'/../config/laratwiliomulti.php', 'laratwiliomulti');
 
 		$this->app->bind('laratwiliomulti', function(){
-			$this->ensureConfigValuesAreSet();
+			#$this->ensureConfigValuesAreSet();
 
-			$configs = config('laratwiliomulti');
+			/*$configs = config('laratwiliomulti');
 			if(is_null($use_account)){
 				$use_account = $config['active_account'];
-			}
+			}*/
 
-			$client = new Client(config('laratwiliomulti.account_sid'), config('laratwiliomulti.auth_token'));
+			#$client = new Client(config('laratwiliomulti.account_sid'), config('laratwiliomulti.auth_token'));
 
-			return new LaraTwilioMulti($client);
+			return new LaraTwilioMulti();
 		});
 	}
 
@@ -62,7 +64,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	}
 
 	protected function publishFiles(){
-		$this->publishes([__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php')], 'laratwiliomulti-config');
+		#$this->publishes([__DIR__.'/../config/laratwiliomulti.php' => config_path('laratwiliomulti.php')], 'laratwiliomulti-config');
 		$this->publishes([__DIR__.'/../public' => public_path('vendor/laratwiliomulti')], 'laratwiliomulti-public');
 		$this->publishes([realpath(__DIR__.'/../views') => resource_path('views/vendor/LaraTwilioMultiViews')]);
 	}
