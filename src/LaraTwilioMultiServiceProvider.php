@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use mysql_xdevapi\Schema;
+use Illuminate\Support\Facades\Schema;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Route;
 
