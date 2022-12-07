@@ -78,7 +78,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function registerMigrations(){
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
 
-		if(!Schema::hasTable(LaraTwilioMultiSettings::$table)){
+		if(!Schema::hasTable('twilio_settings')){
 			if($this->checkAppVersion() < 7){
 				Artisan::call('migrate');
 			}else{
