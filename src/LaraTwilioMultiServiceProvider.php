@@ -3,10 +3,12 @@
 namespace Armenium\LaraTwilioMulti;
 
 use App\Models\Recipient;
+use Armenium\LaraTwilioMulti\Models\LaraTwilioMultiSettings;
 use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use mysql_xdevapi\Schema;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Route;
 
@@ -76,10 +78,13 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function registerMigrations(){
 		$this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
 
-		if($this->checkAppVersion() < 7)
-			Artisan::call('migrate');
-		else
-			Artisan::call('migrate', ['--path' => '/vendor/armenium/laratwiliomulti/database/migrations/2022_11_09_001_create_twilio_settings_table.php']);
+		if(!Schema::hasTable(LaraTwilioMultiSettings::$table)){
+			if($this->checkAppVersion() < 7){
+				Artisan::call('migrate');
+			}else{
+				Artisan::call('migrate', ['--path' => '/vendor/armenium/laratwiliomulti/database/migrations/2022_11_09_001_create_twilio_settings_table.php']);
+			}
+		}
 	}
 
 	public function registerRoutes(){
