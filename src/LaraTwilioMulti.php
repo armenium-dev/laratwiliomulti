@@ -4,7 +4,7 @@ namespace Armenium\LaraTwilioMulti;
 
 use Armenium\LaraTwilioMulti\Models\LaraTwilioMultiSettings;
 use Illuminate\Support\Facades\Log;
-use Twilio\Rest\Client AS TwilioClient;
+use Twilio\Rest\Client;
 
 class LaraTwilioMulti{
 
@@ -17,42 +17,47 @@ class LaraTwilioMulti{
 	private $sms_from = null;
 
 	public function __construct(){
-		Log::stack(['custom'])->debug(__METHOD__);
+		#Log::stack(['custom'])->debug(__METHOD__);
 		$this->getActiveAccounts();
 		#dd($this->accounts);
 		#$this->client = $client;
 	}
 
 	public function notify(string $number, string $message){
-		Log::stack(['custom'])->debug(__METHOD__);
+		#Log::stack(['custom'])->debug(__METHOD__);
 
 		$this->setActiveClientByNumber($number);
 
-		Log::stack(['custom'])->debug([
+		/*Log::stack(['custom'])->debug([
 			'account_sid' => $this->account_sid,
 			'auth_token' => $this->auth_token,
 			'sms_from' => $this->sms_from,
 			'user_number' => $number,
-		]);
+		]);*/
 
 		#$config = config('laratwiliomulti');
 		/*if(is_null($use_account)){
 			$use_account = $config['active_account'];
 		}*/
 
-		$client = new TwilioClient($this->account_sid, $this->auth_token);
+		/** @var Twilio\Rest\Client */
+		$client = new Client($this->account_sid, $this->auth_token);
 
-		return $this->client->messages->create($number, [
+		return $client->messages->create($number, [
 			'from' => $this->sms_from,
 			'body' => $message,
 		]);
 	}
 
 	private function getActiveAccounts(){
+		#Log::stack(['custom'])->debug(__METHOD__);
+
 		$accounts = LaraTwilioMultiSettings::where(['active' => 1])
 			->whereNotNull('account_sid')
 			->whereNotNull('auth_token')
 			->get();
+
+		#Log::stack(['custom'])->debug($accounts);
 
 		if($accounts->count()){
 			foreach($accounts as $account){
@@ -76,11 +81,15 @@ class LaraTwilioMulti{
 	}
 
 	private function setActiveClientByNumber(string $user_number){
+		#Log::stack(['custom'])->debug(__METHOD__);
+
+		#Log::stack(['custom'])->debug($this->accounts);
+
 		if(is_null($this->accounts)) return;
 
 		$default_sms_from = null;
 		foreach($this->accounts as $account){
-			$this->account_id = $account['id'];
+			#$this->account_id = $account['id'];
 			$this->account_sid = $account['account_sid'];
 			$this->auth_token = $account['auth_token'];
 
@@ -104,6 +113,8 @@ class LaraTwilioMulti{
 	}
 
 	private function is_match(string $user_number, string $pattern): bool{
+		#Log::stack(['custom'])->debug(__METHOD__);
+
 		$prefix = '';
 		if(substr($pattern, 0, 1) == '*'){
 			$prefix = '([^\+])';
