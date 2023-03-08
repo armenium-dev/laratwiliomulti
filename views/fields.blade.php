@@ -29,6 +29,7 @@
         <div class="d-flex">
             <div class="col">{!! Form::text('params['.$k.'][sms_from]', null, ['class' => 'js_sms_from form-control', 'placeholder' => 'SMS From number']) !!}</div>
             <div class="col">{!! Form::text('params['.$k.'][pattern]', null, ['class' => 'form-control', 'placeholder' => 'Trigger pattern (opt). Ex: +44* or *2230 or full number']) !!}</div>
+            <div class="col">{!! Form::select('params['.$k.'][country]', $countries, null, ['class' => 'form-control', 'placeholder' => 'Select country']) !!}</div>
             <div class="col"><label class="m-0">{!! Form::checkbox('params['.$k.'][active]', 1, null, ['class' => ''] ) !!} Status</label></div>
             <div class="col"><label class="m-0">{!! Form::radio('params['.$k.'][default]', 1, null, ['class' => 'js_default'] ) !!} Default</label></div>
             <div class="col"><a class="js_delete_row btn btn-danger" href="#"><i class="fa fa-trash"></i> Delete</a></div>

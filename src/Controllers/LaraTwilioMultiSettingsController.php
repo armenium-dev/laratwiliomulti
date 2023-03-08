@@ -28,8 +28,9 @@ class LaraTwilioMultiSettingsController extends Controller{
 	public function create(){
 		$settings = new LaraTwilioMultiSettings();
 		$settings->params = [0 => []];
+        $countries = config('countries.countryList', []);
 
-		return view('LaraTwilioMultiViews::create', compact('settings'));
+        return view('LaraTwilioMultiViews::create', compact('settings', 'countries'));
 	}
 
 	/**
@@ -73,9 +74,13 @@ class LaraTwilioMultiSettingsController extends Controller{
 	public function edit($id, LaraTwilioMultiSettings $laraTwilioMultiSettings){
 		$settings = $laraTwilioMultiSettings->find($id);
 		$settings->params = json_decode($settings->params, true);
-		#dd($settings->params);
+        $countryList = config('countries.countryList', []);
+        $countries = [];
+        foreach ($countryList as $country) {
+            $countries[$country] = $country;
+        }
 
-		return view('LaraTwilioMultiViews::edit', compact('settings'));
+		return view('LaraTwilioMultiViews::edit', compact('settings', 'countries'));
 	}
 
 	/**
