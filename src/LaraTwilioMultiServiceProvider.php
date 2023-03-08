@@ -25,6 +25,7 @@ class LaraTwilioMultiServiceProvider extends ServiceProvider{
 	public function register(){
 		#Log::stack(['custom'])->debug(__METHOD__);
 		#$this->mergeConfigFrom(__DIR__.'/../config/laratwiliomulti.php', 'laratwiliomulti');
+		$this->mergeConfigFrom(__DIR__.'/../config/countries.php', 'countries');
 
 		$this->app->bind('laratwiliomulti', function(){
 			#$this->ensureConfigValuesAreSet();

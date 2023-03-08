@@ -10,11 +10,12 @@ class LaraTwilioMulti{
 
 	/** @var Twilio\Rest\Client */
 	protected $client;
-	private $accounts = null;
+    public $accounts = null;
 	private $account_id = null;
 	private $account_sid = null;
 	private $auth_token = null;
 	private $sms_from = null;
+    private static $instance = null;
 
 	public function __construct(){
 		#Log::stack(['custom'])->debug(__METHOD__);
@@ -24,8 +25,8 @@ class LaraTwilioMulti{
 	}
 
 	public function notify(string $number, string $message){
-		#Log::stack(['custom'])->debug(__METHOD__);
 
+        #Log::stack(['custom'])->debug(__METHOD__);
 		$this->setActiveClientByNumber($number);
 
 		/*Log::stack(['custom'])->debug([
@@ -93,6 +94,9 @@ class LaraTwilioMulti{
 			$this->account_sid = $account['account_sid'];
 			$this->auth_token = $account['auth_token'];
 
+			if (!is_null($this->sms_from)){
+			    break;
+            }
 			foreach($account['params'] as $param){
 				if(isset($param['default']) && $param['default'] == 1){
 					$default_sms_from = $param['sms_from'];
@@ -130,4 +134,16 @@ class LaraTwilioMulti{
 		return !empty($output_array) && isset($output_array[0]);
 	}
 
+    public function smsFrom($value)
+    {
+        $this->sms_from = $value;
+	}
+
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 }
